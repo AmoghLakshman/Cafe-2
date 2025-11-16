@@ -178,11 +178,12 @@ TASK_A_RESULTS = {
 df_task_a = pd.DataFrame(TASK_A_RESULTS)
 
 # Task B: Customer Personas (Clustering Results)
+# *** THIS IS THE FIX: Replaced placeholder data with your REAL results ***
 TASK_B_PERSONAS_NUMERIC = {
     'Cluster': [0, 1, 2, 3],
-    'Avg_Spend_AED': [35.50, 55.20, 70.10, 85.00],
-    'Total_Spend_AED': [80.10, 120.50, 150.00, 200.00],
-    'Willing_Pay_Membership': [50, 100, 150, 120]
+    'Avg_Spend_AED': [26.92, 39.78, 58.78, 69.30],
+    'Total_Spend_AED': [46.91, 73.88, 142.43, 168.79],
+    'Willing_Pay_Membership': [67.36, 247.29, 8.06, 367.73]
 }
 df_task_b_personas = pd.DataFrame(TASK_B_PERSONAS_NUMERIC).set_index('Cluster')
 
@@ -292,9 +293,9 @@ st.sidebar.metric("Features", len(df.columns))
 st.sidebar.markdown("---")
 st.sidebar.info("💡 **Tip:** Use the navigation menu to explore different sections of this analysis.")
 st.sidebar.markdown("---")
-st.sidebar.markdown("**📧 Contact:** [Your Email]")
-st.sidebar.markdown("**👤 Author:** [Your Name]")
-st.sidebar.markdown("**📅 Last Updated:** 2024")
+st.sidebar.markdown("**📧 Contact:** [Your Friend's Email]")
+st.sidebar.markdown("**👤 Author:** [Your Friend's Name]")
+st.sidebar.markdown(f"**📅 Last Updated:** {datetime.now().strftime('%B %Y')}")
 
 # ============================================================================
 # 4. PAGE 1: EXECUTIVE SUMMARY
@@ -348,8 +349,8 @@ if page == "🏠 Executive Summary":
     
     with col4:
         st.metric(
-            label="Customer Segments",
-            value="4 Personas",
+            label="Valuable Personas",
+            value="4 Segments",
             delta="Identified via Clustering"
         )
     
@@ -387,11 +388,11 @@ if page == "🏠 Executive Summary":
         st.markdown("""
         <div style='background-color: #E3F2FD; padding: 20px; border-radius: 10px; border-left: 5px solid #2196F3;'>
             <h4>👥 Premium Customer Persona</h4>
-            <h2 style='color: #1565C0;'>High-Income Reading Enthusiast</h2>
+            <h2 style='color: #1565C0;'>Premium Reading Enthusiast</h2>
             <p><strong>Cluster 3:</strong> Most Valuable Segment</p>
             <p style='font-size: 14px;'>Our clustering analysis identified high-income, regular readers who 
-            visit frequently as the most valuable segment. Average spending: <strong>85 AED</strong>, with 
-            membership willingness of <strong>120 AED</strong>.</p>
+            visit frequently as the most valuable segment. Average spend: <strong>169 AED</strong>, with 
+            membership willingness of <strong>368 AED</strong>.</p>
         </div>
         """, unsafe_allow_html=True)
         
@@ -419,69 +420,56 @@ if page == "🏠 Executive Summary":
         st.markdown("""
         #### Recommended Marketing Approach
         
-        1. **Premium Membership Program**
-           - Target Cluster 3 (High-Income Reading Enthusiasts)
-           - Price point: 120-150 AED/month
-           - Include exclusive book access and event invitations
+        1. **Premium Membership Program (Target: Cluster 1 & 3)**
+           - Price point: 250-350 AED/month (based on WTP)
+           - Include exclusive book access and event invitations.
         
-        2. **Value-Oriented Daily Specials**
-           - Target Cluster 0 (Budget-Conscious Casuals)
-           - Focus on affordable combinations
-           - Drive foot traffic during off-peak hours
+        2. **Per-Visit Premium Offers (Target: Cluster 2)**
+           - This cluster has high income but low membership interest (8 AED).
+           - Do not market memberships; focus on high-profit *per-visit* items (premium food, special coffee, social event tickets).
         
-        3. **Digital Marketing Focus**
-           - 98.9% recall rate enables confident prospect targeting
-           - Use predictive model to optimize ad spend
-           - Focus on high-propensity visitors
+        3. **Value-Oriented Daily Specials (Target: Cluster 0)**
+           - Focus on affordable combinations to increase visit frequency.
+           - Drive foot traffic during off-peak hours.
         """)
     
     with tab2:
         st.markdown("""
         #### High-Performance Product Bundles
         
-        1. **The Business Professional** (Lift: 2.89)
+        1. **The Business Professional** (Lift: 2.89x)
            - Business/Self-Help Book Selection
            - Premium Flavored Coffee
            - International Cuisine Options
-           - Suggested Price: 95 AED
         
-        2. **The Literary Afternoon** (Lift: 2.55)
-           - Fiction Selection
-           - Non-caffeinated Beverages
-           - Light Snacks
-           - Suggested Price: 65 AED
+        2. **The "Me Time" Bundle** (Lift: 2.03x)
+           - Fiction/Literary Book
+           - Light Snacks (cookies, biscuits)
         
-        3. **The Study Session** (Lift: 2.53)
-           - Work/Study Space Access
-           - Unlimited Coffee Refills
-           - Pastries
-           - Suggested Price: 75 AED
+        3. **The Morning Ritual** (Lift: 1.96x)
+           - Breakfast Items
+           - Specialty Coffee
         """)
     
     with tab3:
         st.markdown("""
         #### Customer Segment Prioritization
         
-        **Priority 1: Cluster 3 - Premium Reading Enthusiasts** ⭐
-        - Highest spending: 85 AED average
-        - Visit 2-3 times per week
-        - Willing to pay 120 AED for membership
-        - **Action:** Focus premium offerings and events
+        **Priority 1: Cluster 3 - Premium Reading Enthusiast** ⭐
+        - HIGHEST spend (169 AED) & HIGHEST membership willingness (368 AED).
+        - **Action:** Target with "Elite" memberships and VIP events.
         
-        **Priority 2: Cluster 2 - Affluent Social Visitors** 💰
-        - Good spending: 70 AED average
-        - Frequent visits but occasional readers
-        - **Action:** Promote social events and food quality
+        **Priority 2: Cluster 1 - Middle-Income Bookworm** 📚
+        - Good spend (74 AED) but HIGH membership willingness (247 AED).
+        - **Action:** Target with standard book club memberships. This is your core, loyal reader base.
         
-        **Priority 3: Cluster 1 - Middle-Income Bookworms** 📚
-        - Moderate spending: 55 AED average
-        - Regular readers, weekly visits
-        - **Action:** Book clubs and reading programs
+        **Priority 3: Cluster 2 - Affluent Social Visitor** 💰
+        - HIGH spend (142 AED) but ZERO membership interest (8 AED).
+        - **Action:** DO NOT sell memberships. Focus on premium per-visit items and social events.
         
-        **Priority 4: Cluster 0 - Budget-Conscious Casuals** 💼
-        - Lower spending: 35 AED average
-        - Infrequent visits
-        - **Action:** Entry-level offers to increase frequency
+        **Priority 4: Cluster 0 - Budget-Conscious Casual** 💼
+        - Low spend (47 AED) and low membership willingness (67 AED).
+        - **Action:** Entry-level offers to increase visit frequency.
         """)
     
     st.markdown("---")
@@ -518,7 +506,7 @@ elif page == "📊 Market Insights (EDA)":
     # Key Insights Banner
     col1, col2, col3 = st.columns(3)
     with col1:
-        st.info("**✅ Survey Responses:** " + str(len(df)))
+        st.info(f"**✅ Survey Responses:** {len(df)}")
     with col2:
         likely_visitors = len(df[df['Visit_Likelihood'].isin(['Definitely will visit', 'Probably will visit'])])
         st.success(f"**👥 Likely Visitors:** {likely_visitors} ({likely_visitors/len(df)*100:.1f}%)")
@@ -531,7 +519,7 @@ elif page == "📊 Market Insights (EDA)":
     # Visualization Section
     st.markdown("### 📈 Key Visualizations")
     
-    tab1, tab2, tab3, tab4 = st.tabs(["Visit Likelihood", "Spending Patterns", "Demographics", "Preferences"])
+    tab1, tab2, tab3 = st.tabs(["Visit Likelihood", "Spending Patterns", "Demographics & Preferences"])
     
     with tab1:
         st.markdown("#### Visit Likelihood Analysis")
@@ -554,12 +542,7 @@ elif page == "📊 Market Insights (EDA)":
                     'Definitely will not visit': '#A9A9A9'
                 }
             )
-            fig1.update_layout(
-                xaxis_tickangle=-45,
-                height=400,
-                showlegend=True,
-                legend=dict(orientation="v", yanchor="top", y=1, xanchor="left", x=1.02)
-            )
+            fig1.update_layout(xaxis_tickangle=-45, height=400)
             st.plotly_chart(fig1, use_container_width=True)
         
         with col2:
@@ -569,7 +552,7 @@ elif page == "📊 Market Insights (EDA)":
                 values=likelihood_counts.values,
                 names=likelihood_counts.index,
                 title='Overall Visit Likelihood Distribution',
-                color_discrete_sequence=px.colors.sequential.Oranges_r
+                color_discrete_sequence=px.colors.sequential.YlOrBr_r
             )
             fig2.update_layout(height=400)
             st.plotly_chart(fig2, use_container_width=True)
@@ -581,7 +564,7 @@ elif page == "📊 Market Insights (EDA)":
             color='Visit_Likelihood',
             barmode='stack',
             title='Visit Likelihood by Education Level',
-            color_discrete_sequence=px.colors.sequential.Oranges_r
+            color_discrete_sequence=px.colors.sequential.YlOrBr_r
         )
         fig3.update_layout(xaxis_tickangle=-45, height=400)
         st.plotly_chart(fig3, use_container_width=True)
@@ -608,16 +591,16 @@ elif page == "📊 Market Insights (EDA)":
             st.plotly_chart(fig4, use_container_width=True)
         
         with col2:
-            # Average Spend Distribution
+            # Willingness to Pay for Membership
             fig5 = px.histogram(
                 df,
-                x='Avg_Spend_AED',
+                x='Willing_Pay_Membership',
                 nbins=30,
-                title='Distribution of Average Spend per Visit',
+                title='Distribution of "Willingness to Pay" for Membership',
                 color_discrete_sequence=[ACCENT_COLOR]
             )
             fig5.update_layout(
-                xaxis_title="Average Spend (AED)",
+                xaxis_title="Membership Willingness (AED)",
                 yaxis_title="Frequency",
                 height=400
             )
@@ -660,7 +643,7 @@ elif page == "📊 Market Insights (EDA)":
         st.plotly_chart(fig6, use_container_width=True)
     
     with tab3:
-        st.markdown("#### Demographic Analysis")
+        st.markdown("#### Demographics & Preferences")
         
         col1, col2 = st.columns(2)
         
@@ -673,26 +656,12 @@ elif page == "📊 Market Insights (EDA)":
                 title='Age Group Distribution',
                 labels={'x': 'Age Group', 'y': 'Count'},
                 color=age_counts.values,
-                color_continuous_scale='Oranges'
+                color_continuous_scale='YlOrBr'
             )
             fig7.update_layout(showlegend=False, height=400)
             st.plotly_chart(fig7, use_container_width=True)
         
         with col2:
-            # Gender Distribution
-            gender_counts = df['Gender'].value_counts()
-            fig8 = px.pie(
-                values=gender_counts.values,
-                names=gender_counts.index,
-                title='Gender Distribution',
-                color_discrete_sequence=[PRIMARY_COLOR, SECONDARY_COLOR, ACCENT_COLOR]
-            )
-            fig8.update_layout(height=400)
-            st.plotly_chart(fig8, use_container_width=True)
-        
-        col1, col2 = st.columns(2)
-        
-        with col1:
             # Employment Status
             employment_counts = df['Employment'].value_counts()
             fig9 = px.bar(
@@ -704,22 +673,6 @@ elif page == "📊 Market Insights (EDA)":
             )
             fig9.update_layout(xaxis_tickangle=-45, height=400)
             st.plotly_chart(fig9, use_container_width=True)
-        
-        with col2:
-            # Income Distribution
-            income_counts = df['Income'].value_counts()
-            fig10 = px.bar(
-                x=income_counts.index,
-                y=income_counts.values,
-                title='Income Level Distribution',
-                labels={'x': 'Income Level', 'y': 'Count'},
-                color_discrete_sequence=[ACCENT_COLOR]
-            )
-            fig10.update_layout(xaxis_tickangle=-45, height=400)
-            st.plotly_chart(fig10, use_container_width=True)
-    
-    with tab4:
-        st.markdown("#### Customer Preferences")
         
         col1, col2 = st.columns(2)
         
@@ -749,53 +702,6 @@ elif page == "📊 Market Insights (EDA)":
             fig12.update_layout(xaxis_tickangle=-45, height=400)
             st.plotly_chart(fig12, use_container_width=True)
         
-        # Visit Reason Analysis
-        st.markdown("##### Primary Visit Reasons")
-        visit_reasons = df['Visit_Reason'].value_counts().head(10)
-        fig13 = px.bar(
-            x=visit_reasons.values,
-            y=visit_reasons.index,
-            orientation='h',
-            title='Top 10 Visit Reasons',
-            labels={'x': 'Count', 'y': 'Visit Reason'},
-            color=visit_reasons.values,
-            color_continuous_scale='Oranges'
-        )
-        fig13.update_layout(height=500, showlegend=False)
-        st.plotly_chart(fig13, use_container_width=True)
-    
-    st.markdown("---")
-    
-    # Statistical Summary
-    st.markdown("### 📊 Statistical Summary")
-    
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        st.markdown("#### Spending Statistics")
-        st.dataframe(
-            df[['Avg_Spend_AED', 'Total_Spend_AED', 'Willing_Pay_Membership']].describe(),
-            use_container_width=True
-        )
-    
-    with col2:
-        st.markdown("#### Categorical Distributions")
-        categorical_summary = pd.DataFrame({
-            'Feature': ['Visit Likelihood', 'Age Group', 'Gender', 'Education'],
-            'Most Common': [
-                df['Visit_Likelihood'].mode()[0],
-                df['Age_Group'].mode()[0],
-                df['Gender'].mode()[0],
-                df['Education'].mode()[0]
-            ],
-            'Unique Values': [
-                df['Visit_Likelihood'].nunique(),
-                df['Age_Group'].nunique(),
-                df['Gender'].nunique(),
-                df['Education'].nunique()
-            ]
-        })
-        st.dataframe(categorical_summary, use_container_width=True)
 
 # ============================================================================
 # 6. PAGE 3: CUSTOMER PERSONAS
@@ -824,41 +730,20 @@ elif page == "👥 Customer Personas":
     st.markdown("### 💰 Persona Financial Profiles")
     
     # Create styled dataframe
-    styled_personas = df_task_b_personas.style\
-        .format("{:.2f}")\
-        .background_gradient(cmap='YlOrBr', subset=['Avg_Spend_AED'])\
-        .background_gradient(cmap='YlOrBr', subset=['Total_Spend_AED'])\
-        .background_gradient(cmap='YlOrBr', subset=['Willing_Pay_Membership'])\
+    formatter_dict = {
+        'Avg_Spend_AED': '{:.2f}',
+        'Total_Spend_AED': '{:.2f}',
+        'Willing_Pay_Membership': '{:.2f}'
+    }
+    styled_personas = (
+        df_task_b_personas.style.format(formatter_dict)
+        .background_gradient(cmap='YlOrBr', subset=['Avg_Spend_AED'])
+        .background_gradient(cmap='YlOrBr', subset=['Total_Spend_AED'])
+        .background_gradient(cmap='YlGn', subset=['Willing_Pay_Membership'])
         .set_properties(**{'text-align': 'center'})
+    )
     
     st.dataframe(styled_personas, use_container_width=True)
-    
-    # Visualize numerical profiles
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        fig_spend = px.bar(
-            df_task_b_personas.reset_index(),
-            x='Cluster',
-            y=['Avg_Spend_AED', 'Total_Spend_AED'],
-            title='Spending Comparison Across Clusters',
-            barmode='group',
-            color_discrete_sequence=[PRIMARY_COLOR, SECONDARY_COLOR]
-        )
-        fig_spend.update_layout(height=400)
-        st.plotly_chart(fig_spend, use_container_width=True)
-    
-    with col2:
-        fig_membership = px.bar(
-            df_task_b_personas.reset_index(),
-            x='Cluster',
-            y='Willing_Pay_Membership',
-            title='Membership Fee Willingness by Cluster',
-            color='Willing_Pay_Membership',
-            color_continuous_scale='Oranges'
-        )
-        fig_membership.update_layout(height=400, showlegend=False)
-        st.plotly_chart(fig_membership, use_container_width=True)
     
     st.markdown("---")
     
@@ -867,10 +752,10 @@ elif page == "👥 Customer Personas":
     
     # Create tabs for each persona
     tab0, tab1, tab2, tab3 = st.tabs([
-        "Cluster 0: Budget-Conscious Casual",
-        "Cluster 1: Middle-Income Bookworm",
-        "Cluster 2: Affluent Social Visitor",
-        "Cluster 3: Premium Reading Enthusiast ⭐"
+        "Cluster 0: 💼 Budget-Conscious Casual",
+        "Cluster 1: 📚 Middle-Income Bookworm",
+        "Cluster 2: 💰 Affluent Social Visitor",
+        "Cluster 3: ⭐ Premium Reading Enthusiast"
     ])
     
     with tab0:
@@ -878,35 +763,30 @@ elif page == "👥 Customer Personas":
         
         with col1:
             st.markdown("""
-            <div style='background-color: #FFF8DC; padding: 20px; border-radius: 10px; text-align: center;'>
+            <div style='background-color: #F5F5F0; padding: 20px; border-radius: 10px; text-align: center;'>
                 <h1 style='font-size: 60px;'>💼</h1>
                 <h3>Cluster 0</h3>
                 <h4>Budget-Conscious Casual</h4>
             </div>
             """, unsafe_allow_html=True)
             
-            st.metric("Avg Spend", "35.50 AED", delta="-49.50 AED vs highest")
-            st.metric("Total Spend", "80.10 AED")
-            st.metric("Membership", "50 AED")
+            st.metric("Avg Spend", f"{df_task_b_personas.loc[0, 'Avg_Spend_AED']:.2f} AED")
+            st.metric("Total Spend", f"{df_task_b_personas.loc[0, 'Total_Spend_AED']:.2f} AED")
+            st.metric("Membership WTP", f"{df_task_b_personas.loc[0, 'Willing_Pay_Membership']:.2f} AED")
         
         with col2:
             st.markdown("#### Characteristics")
             st.markdown(f"""
-            - **Income Level:** 10,001 - 20,000 AED
-            - **Reading Frequency:** Occasional (1-2 times/week)
-            - **Cafe Visits:** 2-3 times per month
-            - **Profile:** Entry-level customers with limited disposable income
+            - **Income Level:** {TASK_B_PERSONAS_CATEGORICAL['Cluster 0']['Income']}
+            - **Reading Frequency:** {TASK_B_PERSONAS_CATEGORICAL['Cluster 0']['Reading Frequency']}
+            - **Cafe Visits:** {TASK_B_PERSONAS_CATEGORICAL['Cluster 0']['Cafe Visits']}
+            - **Profile:** Entry-level customers with limited disposable income.
             
             #### Strategic Recommendations
-            - ✅ Focus on **daily specials** and **value combos**
-            - ✅ Target with **entry-level promotions**
-            - ✅ Avoid expensive membership pitches
-            - ✅ Use as **volume driver** during off-peak hours
-            
-            #### Marketing Messages
-            - "Affordable luxury for everyday moments"
-            - "Quality coffee without breaking the bank"
-            - "Your neighborhood reading spot"
+            - ✅ Focus on **daily specials** and **value combos**.
+            - ✅ Target with **entry-level promotions** (e.g., "coffee + pastry for 25 AED").
+            - ✅ Avoid expensive membership pitches.
+            - ✅ Use as **volume driver** during off-peak hours.
             """)
     
     with tab1:
@@ -914,141 +794,94 @@ elif page == "👥 Customer Personas":
         
         with col1:
             st.markdown("""
-            <div style='background-color: #E6F3FF; padding: 20px; border-radius: 10px; text-align: center;'>
+            <div style='background-color: #F5F5F0; padding: 20px; border-radius: 10px; text-align: center;'>
                 <h1 style='font-size: 60px;'>📚</h1>
                 <h3>Cluster 1</h3>
                 <h4>Middle-Income Bookworm</h4>
             </div>
             """, unsafe_allow_html=True)
             
-            st.metric("Avg Spend", "55.20 AED", delta="+19.70 AED vs Cluster 0")
-            st.metric("Total Spend", "120.50 AED")
-            st.metric("Membership", "100 AED")
+            st.metric("Avg Spend", f"{df_task_b_personas.loc[1, 'Avg_Spend_AED']:.2f} AED")
+            st.metric("Total Spend", f"{df_task_b_personas.loc[1, 'Total_Spend_AED']:.2f} AED")
+            st.metric("Membership WTP", f"{df_task_b_personas.loc[1, 'Willing_Pay_Membership']:.2f} AED", delta="High WTP!")
         
         with col2:
             st.markdown("#### Characteristics")
             st.markdown(f"""
-            - **Income Level:** 20,001 - 35,000 AED
-            - **Reading Frequency:** Regular (3-5 times/week)
-            - **Cafe Visits:** Once per week
-            - **Profile:** Book enthusiasts with moderate spending power
+            - **Income Level:** {TASK_B_PERSONAS_CATEGORICAL['Cluster 1']['Income']}
+            - **Reading Frequency:** {TASK_B_PERSONAS_CATEGORICAL['Cluster 1']['Reading Frequency']}
+            - **Cafe Visits:** {TASK_B_PERSONAS_CATEGORICAL['Cluster 1']['Cafe Visits']}
+            - **Profile:** Book enthusiasts with moderate spending power but **HIGH membership interest**.
             
             #### Strategic Recommendations
-            - ✅ Launch **book club programs**
-            - ✅ Offer **reading rewards program**
-            - ✅ Host **author meetups and literary events**
-            - ✅ Mid-tier membership package (100 AED range)
-            
-            #### Marketing Messages
-            - "Where readers become friends"
-            - "Your weekly reading ritual awaits"
-            - "Join our community of book lovers"
+            - ✅ This is your **core membership base**.
+            - ✅ Offer **book club programs** and reading rewards.
+            - ✅ Host **author meetups and literary events**.
+            - ✅ Market a mid-tier membership (e.g., 249 AED/month) focused on book access.
             """)
-    
+
     with tab2:
         col1, col2 = st.columns([1, 2])
         
         with col1:
             st.markdown("""
-            <div style='background-color: #FFF0F5; padding: 20px; border-radius: 10px; text-align: center;'>
+            <div style='background-color: #F5F5F0; padding: 20px; border-radius: 10px; text-align: center;'>
                 <h1 style='font-size: 60px;'>💰</h1>
                 <h3>Cluster 2</h3>
                 <h4>Affluent Social Visitor</h4>
             </div>
             """, unsafe_allow_html=True)
             
-            st.metric("Avg Spend", "70.10 AED", delta="+34.60 AED vs Cluster 0")
-            st.metric("Total Spend", "150.00 AED")
-            st.metric("Membership", "150 AED")
+            st.metric("Avg Spend", f"{df_task_b_personas.loc[2, 'Avg_Spend_AED']:.2f} AED")
+            st.metric("Total Spend", f"{df_task_b_personas.loc[2, 'Total_Spend_AED']:.2f} AED", delta="High Spend")
+            st.metric("Membership WTP", f"{df_task_b_personas.loc[2, 'Willing_Pay_Membership']:.2f} AED", delta="Very Low WTP!", delta_color="inverse")
         
         with col2:
             st.markdown("#### Characteristics")
             st.markdown(f"""
-            - **Income Level:** 50,001 - 75,000 AED
-            - **Reading Frequency:** Occasional (1-2 times/week)
-            - **Cafe Visits:** 2-3 times per week
-            - **Profile:** High earners who value social ambiance over reading
+            - **Income Level:** {TASK_B_PERSONAS_CATEGORICAL['Cluster 2']['Income']}
+            - **Reading Frequency:** {TASK_B_PERSONAS_CATEGORICAL['Cluster 2']['Reading Frequency']}
+            - **Cafe Visits:** {TASK_B_PERSONAS_CATEGORICAL['Cluster 2']['Cafe Visits']}
+            - **Profile:** High earners who value social ambiance over reading.
             
             #### Strategic Recommendations
-            - ✅ Emphasize **premium food quality**
-            - ✅ Create **social events and networking opportunities**
-            - ✅ Focus on **ambiance and experience**
-            - ✅ Premium but not top-tier membership
-            
-            #### Marketing Messages
-            - "Where business meets pleasure"
-            - "The perfect meeting spot for professionals"
-            - "Elevate your social experience"
+            - ✅ **DO NOT** market memberships to this group.
+            - ✅ Emphasize **premium food & beverage quality**.
+            - ✅ Focus on **ambiance, aesthetics, and social events**.
+            - ✅ Upsell high-profit *per-visit* items.
             """)
-    
+
     with tab3:
         col1, col2 = st.columns([1, 2])
         
         with col1:
             st.markdown("""
-            <div style='background-color: #FFF5E6; padding: 20px; border-radius: 10px; text-align: center; border: 3px solid #FFD700;'>
+            <div style='background-color: #FFF5E6; padding: 20px; border-radius: 10px; text-align: center; border: 3px solid #D2B48C;'>
                 <h1 style='font-size: 60px;'>⭐</h1>
                 <h3>Cluster 3</h3>
                 <h4>Premium Reading Enthusiast</h4>
-                <p style='color: #FFD700; font-weight: bold;'>★ HIGHEST VALUE SEGMENT ★</p>
+                <p style='color: #6F4E37; font-weight: bold;'>★ HIGHEST VALUE SEGMENT ★</p>
             </div>
             """, unsafe_allow_html=True)
             
-            st.metric("Avg Spend", "85.00 AED", delta="HIGHEST", delta_color="normal")
-            st.metric("Total Spend", "200.00 AED", delta="HIGHEST", delta_color="normal")
-            st.metric("Membership", "120 AED")
+            st.metric("Avg Spend", f"{df_task_b_personas.loc[3, 'Avg_Spend_AED']:.2f} AED", delta="HIGHEST", delta_color="normal")
+            st.metric("Total Spend", f"{df_task_b_personas.loc[3, 'Total_Spend_AED']:.2f} AED", delta="HIGHEST", delta_color="normal")
+            st.metric("Membership WTP", f"{df_task_b_personas.loc[3, 'Willing_Pay_Membership']:.2f} AED", delta="HIGHEST", delta_color="normal")
         
         with col2:
             st.markdown("#### Characteristics")
             st.markdown(f"""
-            - **Income Level:** 50,001 - 75,000 AED
-            - **Reading Frequency:** Regular (3-5 times/week)
-            - **Cafe Visits:** 2-3 times per week
-            - **Profile:** HIGH-VALUE: Affluent, passionate readers with high visit frequency
+            - **Income Level:** {TASK_B_PERSONAS_CATEGORICAL['Cluster 3']['Income']}
+            - **Reading Frequency:** {TASK_B_PERSONAS_CATEGORICAL['Cluster 3']['Reading Frequency']}
+            - **Cafe Visits:** {TASK_B_PERSONAS_CATEGORICAL['Cluster 3']['Cafe Visits']}
+            - **Profile:** The "Golden Customer". Affluent, passionate readers with high spend and high membership interest.
             
             #### Strategic Recommendations
-            - ⭐ **PRIMARY TARGET** for all premium offerings
-            - ⭐ **Exclusive membership tier** with special perks
-            - ⭐ **VIP events** and **author sessions**
-            - ⭐ **Personalized book recommendations**
-            - ⭐ **Priority seating** and **extended hours access**
-            
-            #### Marketing Messages
-            - "An exclusive haven for discerning readers"
-            - "Where literary passion meets premium comfort"
-            - "Join the elite reading community"
+            - ✅ **PRIMARY TARGET** for all premium offerings.
+            - ✅ Create an **"Elite" membership tier** (e.g., 350+ AED) with exclusive perks.
+            - ✅ Market **VIP events, author sessions, and private reading rooms**.
+            - ✅ This group validates the entire "Coffee & Books" premium concept.
             """)
-    
-    st.markdown("---")
-    
-    # Comparison Matrix
-    st.markdown("### 📊 Persona Comparison Matrix")
-    
-    comparison_data = {
-        'Metric': ['Average Spend', 'Total Spend', 'Membership Willingness', 'Visit Frequency', 'Reading Intensity', 'Target Priority'],
-        'Cluster 0': ['35.50 AED', '80.10 AED', '50 AED', 'Low', 'Low', 'Tier 4'],
-        'Cluster 1': ['55.20 AED', '120.50 AED', '100 AED', 'Medium', 'High', 'Tier 3'],
-        'Cluster 2': ['70.10 AED', '150.00 AED', '150 AED', 'High', 'Low', 'Tier 2'],
-        'Cluster 3': ['85.00 AED ⭐', '200.00 AED ⭐', '120 AED', 'High ⭐', 'High ⭐', 'Tier 1 ⭐']
-    }
-    
-    df_comparison = pd.DataFrame(comparison_data)
-    st.dataframe(df_comparison, use_container_width=True, hide_index=True)
-    
-    # Strategic Action Plan
-    st.markdown("---")
-    st.markdown("### 🎯 Strategic Action Plan by Persona")
-    
-    action_plan = {
-        'Persona': ['Cluster 0', 'Cluster 1', 'Cluster 2', 'Cluster 3'],
-        'Marketing Budget': ['5%', '15%', '30%', '50%'],
-        'Membership Tier': ['Basic (50 AED)', 'Standard (100 AED)', 'Premium (150 AED)', 'Elite (120 AED + perks)'],
-        'Primary Channel': ['Social Media Ads', 'Book Community Forums', 'LinkedIn/Professional Networks', 'Exclusive Events & VIP Outreach'],
-        'Key Offering': ['Daily Specials', 'Book Clubs', 'Networking Events', 'Exclusive Reading Rooms']
-    }
-    
-    df_action = pd.DataFrame(action_plan)
-    st.dataframe(df_action, use_container_width=True, hide_index=True)
 
 # ============================================================================
 # 7. PAGE 4: ML MODEL RESULTS
@@ -1059,60 +892,15 @@ elif page == "📈 ML Model Results":
     st.markdown("Comprehensive results from all four machine learning tasks.")
     st.markdown("---")
     
-    # Task Overview Cards
-    col1, col2, col3, col4 = st.columns(4)
-    
-    with col1:
-        st.markdown("""
-        <div style='background-color: #E8F5E9; padding: 15px; border-radius: 10px; text-align: center;'>
-            <h4>Task A</h4>
-            <h2>🎯</h2>
-            <p><strong>Classification</strong></p>
-            <p>Visit Prediction</p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with col2:
-        st.markdown("""
-        <div style='background-color: #E3F2FD; padding: 15px; border-radius: 10px; text-align: center;'>
-            <h4>Task B</h4>
-            <h2>👥</h2>
-            <p><strong>Clustering</strong></p>
-            <p>Customer Personas</p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with col3:
-        st.markdown("""
-        <div style='background-color: #FFF3E0; padding: 15px; border-radius: 10px; text-align: center;'>
-            <h4>Task C</h4>
-            <h2>📊</h2>
-            <p><strong>Regression</strong></p>
-            <p>Spend Drivers</p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with col4:
-        st.markdown("""
-        <div style='background-color: #FCE4EC; padding: 15px; border-radius: 10px; text-align: center;'>
-            <h4>Task D</h4>
-            <h2>🔗</h2>
-            <p><strong>Association Rules</strong></p>
-            <p>Product Bundles</p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    st.markdown("---")
-    
     # Task A: Classification
     with st.expander("🎯 TASK A: Classification Model Results", expanded=True):
         st.markdown("### Model Performance Comparison")
-        st.markdown("**Objective:** Predict whether a customer will visit the cafe")
+        st.markdown("**Objective:** Predict whether a customer will visit the cafe (`Visit_Likelihood`)")
         
         # Display results table with styling
         styled_task_a = df_task_a.style\
             .format({'Accuracy': '{:.2%}', 'Precision': '{:.2%}', 'Recall': '{:.2%}', 'F1-Score': '{:.2%}'})\
-            .highlight_max(axis=0, subset=['Accuracy', 'Precision', 'Recall', 'F1-Score'], color='#D4EDDA')\
+            .highlight_max(axis=0, subset=['Accuracy', 'Precision', 'Recall', 'F1-Score'], color='#D2B48C')\
             .set_properties(**{'text-align': 'center'})
         
         st.dataframe(styled_task_a, use_container_width=True)
@@ -1124,10 +912,10 @@ elif page == "📈 ML Model Results":
             fig_models = px.bar(
                 df_task_a,
                 x='Model',
-                y=['Accuracy', 'Precision', 'Recall', 'F1-Score'],
-                title='Model Performance Metrics Comparison',
+                y=['Accuracy', 'F1-Score'],
+                title='Model Performance (Accuracy & F1-Score)',
                 barmode='group',
-                color_discrete_sequence=[PRIMARY_COLOR, SECONDARY_COLOR, ACCENT_COLOR, '#DEB887']
+                color_discrete_sequence=[PRIMARY_COLOR, ACCENT_COLOR]
             )
             fig_models.update_layout(xaxis_tickangle=-45, height=400)
             st.plotly_chart(fig_models, use_container_width=True)
@@ -1135,7 +923,6 @@ elif page == "📈 ML Model Results":
         with col2:
             # Champion model highlight
             fig_champion = go.Figure()
-            
             champion_metrics = df_task_a[df_task_a['Model'] == 'K-Nearest Neighbors'].iloc[0]
             
             fig_champion.add_trace(go.Scatterpolar(
@@ -1156,83 +943,49 @@ elif page == "📈 ML Model Results":
         
         st.success("""
         **🏆 CHAMPION MODEL: K-Nearest Neighbors**
-        - **F1-Score: 86.96%** - Best overall balance between precision and recall
-        - **Recall: 98.9%** - Exceptional at identifying ALL potential visitors
-        - **Business Impact:** Minimizes false negatives, ensuring we never miss a potential customer
-        """)
-        
-        st.markdown("#### Key Insights")
-        st.markdown("""
-        1. **K-Nearest Neighbors (KNN)** emerged as the champion with the highest F1-Score
-        2. **Exceptional Recall (98.9%)** means we capture nearly all potential visitors
-        3. **Accuracy of 77.5%** provides reliable predictions for business decisions
-        4. All models show strong recall, indicating good pattern recognition in the data
+        - **F1-Score: 86.96%** - Best overall balance between precision and recall.
+        - **Recall: 98.9%** - This is the key metric! The model is exceptional at identifying *all* potential visitors.
+        - **Business Impact:** This model minimizes "False Negatives," ensuring our marketing almost *never* misses a potential customer.
         """)
     
     # Task C: Regression
     with st.expander("💰 TASK C: Regression Analysis - Spending Drivers", expanded=False):
-        st.markdown("### Key Drivers of Customer Spending")
-        st.markdown("**Objective:** Identify factors that most significantly impact total spending")
+        st.markdown("### Key Drivers of Customer Spending (`Total_Spend_AED`)")
+        st.markdown("**Objective:** Identify factors that most significantly impact total spending.")
         
         # Display coefficients
         styled_task_c = df_task_c.style\
             .format({'Coefficient (AED)': '{:.2f}'})\
-            .background_gradient(cmap='RdYlGn', subset=['Coefficient (AED)'])\
+            .background_gradient(cmap='BrBG', subset=['Coefficient (AED)'])\
             .set_properties(**{'text-align': 'left'})
         
         st.dataframe(styled_task_c, use_container_width=True)
         
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            # Positive drivers
-            positive_drivers = df_task_c[df_task_c['Coefficient (AED)'] > 0].sort_values('Coefficient (AED)', ascending=False)
-            fig_positive = px.bar(
-                positive_drivers,
-                x='Coefficient (AED)',
-                y='Feature',
-                orientation='h',
-                title='Positive Spending Drivers',
-                color='Coefficient (AED)',
-                color_continuous_scale='Greens'
-            )
-            fig_positive.update_layout(height=400, showlegend=False)
-            st.plotly_chart(fig_positive, use_container_width=True)
-        
-        with col2:
-            # Negative drivers
-            negative_drivers = df_task_c[df_task_c['Coefficient (AED)'] < 0].sort_values('Coefficient (AED)')
-            fig_negative = px.bar(
-                negative_drivers,
-                x='Coefficient (AED)',
-                y='Feature',
-                orientation='h',
-                title='Negative Spending Drivers',
-                color='Coefficient (AED)',
-                color_continuous_scale='Reds'
-            )
-            fig_negative.update_layout(height=400, showlegend=False)
-            st.plotly_chart(fig_negative, use_container_width=True)
+        # Visualization
+        fig_task_c = px.bar(
+            df_task_c.sort_values('Coefficient (AED)'),
+            x='Coefficient (AED)',
+            y='Feature',
+            orientation='h',
+            title='Price Drivers (Lasso Coefficients)',
+            color='Coefficient (AED)',
+            color_continuous_scale='BrBG'
+        )
+        st.plotly_chart(fig_task_c, use_container_width=True)
         
         st.warning("""
         **💡 KEY FINDING: Income is the Dominant Driver**
-        - Customers earning **75k+ AED** spend an additional **117.24 AED** per visit
-        - Customers earning **50-75k AED** spend an additional **89.74 AED** per visit
-        - Lower income brackets (<10k AED) show negative coefficients, indicating reduced spending
-        """)
+        - Customers earning **75k+ AED** spend an additional **117.24 AED** per visit.
+        - Customers earning **50-75k AED** spend an additional **89.74 AED** per visit.
+        - Lower income brackets (<10k AED) show significant negative coefficients.
         
-        st.markdown("#### Business Implications")
-        st.markdown("""
-        1. **Target High-Income Segments** with premium offerings and exclusive experiences
-        2. **Food Quality & Work/Study Environment** positively impact spending (+26.42 AED)
-        3. **Price Sensitivity** is real among lower-income segments - offer tiered options
-        4. **Marketing ROI** will be highest when targeting 50k+ income brackets
+        **Business Impact:** All premium marketing and membership tiers *must* be targeted at the 50k+ income segments.
         """)
     
     # Task D: Association Rules
     with st.expander("🔗 TASK D: Association Rules - Product Bundles", expanded=False):
         st.markdown("### Strategic Product Bundle Opportunities")
-        st.markdown("**Objective:** Discover product combinations frequently purchased together")
+        st.markdown("**Objective:** Discover product combinations frequently purchased together.")
         
         # Display rules
         styled_task_d = df_task_d.style\
@@ -1243,146 +996,26 @@ elif page == "📈 ML Model Results":
         st.dataframe(styled_task_d, use_container_width=True)
         
         # Visualize top rules
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            fig_lift = px.bar(
-                df_task_d.head(10),
-                x='lift',
-                y=df_task_d.head(10).index,
-                orientation='h',
-                title='Top 10 Rules by Lift',
-                color='lift',
-                color_continuous_scale='Oranges',
-                labels={'y': 'Rule #'}
-            )
-            fig_lift.update_layout(height=400, showlegend=False)
-            st.plotly_chart(fig_lift, use_container_width=True)
-        
-        with col2:
-            fig_confidence = px.scatter(
-                df_task_d,
-                x='support',
-                y='confidence',
-                size='lift',
-                title='Rule Quality: Support vs Confidence (sized by Lift)',
-                color='lift',
-                color_continuous_scale='Oranges',
-                hover_data=['antecedents', 'consequents']
-            )
-            fig_confidence.update_layout(height=400)
-            st.plotly_chart(fig_confidence, use_container_width=True)
+        fig_lift = px.bar(
+            df_task_d.head(10),
+            x='lift',
+            y=df_task_d.head(10)['antecedents'],
+            orientation='h',
+            title='Top 10 Rules by Lift (Surprise Factor)',
+            color='lift',
+            color_continuous_scale='YlOrBr',
+            labels={'y': 'Rule Antecedent (IF...)'}
+        )
+        st.plotly_chart(fig_lift, use_container_width=True)
         
         st.info("""
         **🎯 TOP STRATEGIC BUNDLE: "The Business Professional"**
         - **Combination:** Business Books + Flavored Coffee + International Cuisine
-        - **Lift: 2.89x** - Customers buying these together are nearly 3x more likely
-        - **Confidence: 63.16%** - Strong predictive relationship
-        - **Suggested Package Price:** 95 AED (vs 100+ AED if purchased separately)
-        """)
+        - **Lift: 2.89x** - Customers buying these together are nearly 3x more likely.
+        - **Confidence: 63.16%** - A strong predictive relationship.
         
-        st.markdown("#### Recommended Bundle Strategies")
-        
-        bundle_strategies = {
-            'Bundle Name': [
-                'The Business Professional',
-                'The Literary Enthusiast',
-                'The Study Session',
-                'The Morning Ritual',
-                'The Family Hour'
-            ],
-            'Components': [
-                'Business Books + Flavored Coffee + International Food',
-                'Fiction Books + Non-caffeinated Drinks + Light Snacks',
-                'Study Space + Coffee + Pastries',
-                'Breakfast Items + Specialty Coffee',
-                'Children\'s Books + Desserts + Family-friendly Space'
-            ],
-            'Target Persona': [
-                'Cluster 3 (Premium Enthusiasts)',
-                'Cluster 1 (Bookworms)',
-                'Cluster 2 (Social Visitors)',
-                'All Clusters',
-                'Family Segments'
-            ],
-            'Suggested Price': [
-                '95 AED',
-                '65 AED',
-                '75 AED',
-                '55 AED',
-                '85 AED'
-            ],
-            'Expected Lift': [
-                '2.89x',
-                '2.55x',
-                '2.53x',
-                '1.96x',
-                '1.88x'
-            ]
-        }
-        
-        df_bundles = pd.DataFrame(bundle_strategies)
-        st.dataframe(df_bundles, use_container_width=True, hide_index=True)
-    
-    st.markdown("---")
-    
-    # Overall Insights Summary
-    st.markdown("### 🎓 Overall ML Insights Summary")
-    
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        st.success("""
-        **✅ What's Working**
-        1. **High Model Accuracy:** 77.5% prediction accuracy for visit likelihood
-        2. **Clear Personas:** 4 distinct customer segments identified
-        3. **Income Matters:** Strong correlation between income and spending
-        4. **Bundle Opportunities:** Multiple high-lift product combinations found
-        5. **Actionable Insights:** All findings translate directly to business strategy
+        **Business Impact:** This is a perfect "Business Lunch" special.
         """)
-    
-    with col2:
-        st.info("""
-        **💡 Key Recommendations**
-        1. Deploy KNN model for prospect scoring and targeting
-        2. Focus marketing budget on high-income segments (Clusters 2 & 3)
-        3. Create tiered membership packages aligned with persona profiles
-        4. Launch bundled offerings based on association rules
-        5. Emphasize food quality and work/study environment in messaging
-        """)
-    
-    # Download Results
-    st.markdown("---")
-    st.markdown("### 📥 Export Results")
-    
-    col1, col2, col3 = st.columns(3)
-    
-    with col1:
-        csv_task_a = df_task_a.to_csv(index=False).encode('utf-8')
-        st.download_button(
-            label="Download Classification Results",
-            data=csv_task_a,
-            file_name="classification_results.csv",
-            mime="text/csv"
-        )
-    
-    with col2:
-        csv_task_c = df_task_c.to_csv(index=False).encode('utf-8')
-        st.download_button(
-            label="Download Regression Drivers",
-            data=csv_task_c,
-            file_name="regression_drivers.csv",
-            mime="text/csv"
-        )
-    
-    with col3:
-        csv_task_d = df_task_d.to_csv(index=False).encode('utf-8')
-        st.download_button(
-            label="Download Association Rules",
-            data=csv_task_d,
-            file_name="association_rules.csv",
-            mime="text/csv"
-        )
 
 # ============================================================================
 # 8. PAGE 5: LIVE PROSPECT SIMULATOR
@@ -1390,26 +1023,8 @@ elif page == "📈 ML Model Results":
 
 elif page == "🔮 Live Prospect Simulator":
     st.title("🔮 Live Prospect Simulator")
-    st.markdown("Interactive prediction tool using our Champion Model (K-Nearest Neighbors)")
+    st.markdown("This is an interactive tool using our **Champion Model (K-Nearest Neighbors)** to predict the visit likelihood of a new prospect.")
     st.markdown("---")
-    
-    # Model Info
-    st.markdown("""
-    <div style='background-color: #E8F5E9; padding: 20px; border-radius: 10px; border-left: 5px solid #4CAF50;'>
-        <h3>🏆 About This Simulator</h3>
-        <p style='font-size: 16px;'>
-        This tool uses our <strong>Champion Classification Model (K-Nearest Neighbors)</strong> 
-        to predict the visit likelihood of a new prospect in real-time. The model achieved:
-        </p>
-        <ul style='font-size: 16px;'>
-            <li><strong>77.5% Accuracy</strong></li>
-            <li><strong>98.9% Recall</strong> - Exceptional at finding potential customers</li>
-            <li><strong>86.96% F1-Score</strong> - Best overall performance</li>
-        </ul>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    st.markdown("<br>", unsafe_allow_html=True)
     
     # Build and cache the model
     @st.cache_resource
@@ -1449,6 +1064,7 @@ elif page == "🔮 Live Prospect Simulator":
                 ('classifier', champion_model)
             ])
             
+            # Train on full dataset (for demo purposes)
             clf_pipeline.fit(X, y)
             
             return clf_pipeline, df, True
@@ -1464,130 +1080,48 @@ elif page == "🔮 Live Prospect Simulator":
         st.error("❌ Model could not be loaded. Please check the data and try again.")
         st.stop()
     
-    st.success("✅ Champion Model is trained and ready for predictions!")
+    st.success("✅ Champion Model (K-Nearest Neighbors) is trained and ready!")
     
     st.markdown("---")
     
     # Input Form
     st.markdown("### 📝 Enter Prospect Information")
-    st.markdown("Fill in the details below to get a visit likelihood prediction:")
     
-    # Create input form
     with st.form("prospect_form"):
-        # Demographic Information
-        st.markdown("#### 👤 Demographics")
-        col1, col2, col3, col4 = st.columns(4)
-        
-        with col1:
-            age = st.selectbox(
-                "Age Group",
-                options=sorted(df_reference['Age_Group'].unique()),
-                help="Select the prospect's age group"
-            )
-        
-        with col2:
-            gender = st.selectbox(
-                "Gender",
-                options=sorted(df_reference['Gender'].unique()),
-                help="Select the prospect's gender"
-            )
-        
-        with col3:
-            employment = st.selectbox(
-                "Employment Status",
-                options=sorted(df_reference['Employment'].unique()),
-                help="Current employment status"
-            )
-        
-        with col4:
-            education = st.selectbox(
-                "Education Level",
-                options=sorted(df_reference['Education'].unique()),
-                help="Highest education level achieved"
-            )
-        
-        # Financial Information
-        st.markdown("#### 💰 Financial Profile")
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            income = st.selectbox(
-                "Income Level (AED)",
-                options=sorted(df_reference['Income'].unique()),
-                help="Monthly income bracket"
-            )
-        
-        with col2:
-            pay_membership = st.slider(
-                "Willing to Pay for Membership (AED)",
-                min_value=0,
-                max_value=500,
-                value=100,
-                step=10,
-                help="Maximum monthly membership fee they'd consider"
-            )
-        
-        # Behavioral Information
-        st.markdown("#### 📚 Behavioral Profile")
         col1, col2, col3 = st.columns(3)
         
         with col1:
-            cafe_freq = st.selectbox(
-                "Cafe Visit Frequency",
-                options=sorted(df_reference['Cafe_Frequency'].unique()),
-                help="How often they currently visit cafes"
-            )
-        
+            st.markdown("#### 👤 Demographics")
+            age = st.selectbox("Age Group", options=sorted(df_reference['Age_Group'].unique()))
+            gender = st.selectbox("Gender", options=sorted(df_reference['Gender'].unique()))
+            employment = st.selectbox("Employment Status", options=sorted(df_reference['Employment'].unique()))
+            education = st.selectbox("Education Level", options=sorted(df_reference['Education'].unique()))
+
         with col2:
-            read_freq = st.selectbox(
-                "Reading Frequency",
-                options=sorted(df_reference['Reading_Frequency'].unique()),
-                help="How often they read"
-            )
-        
+            st.markdown("#### 📚 Behavior")
+            income = st.selectbox("Income Level (AED)", options=sorted(df_reference['Income'].unique()))
+            cafe_freq = st.selectbox("Cafe Visit Frequency", options=sorted(df_reference['Cafe_Frequency'].unique()))
+            read_freq = st.selectbox("Reading Frequency", options=sorted(df_reference['Reading_Frequency'].unique()))
+            visit_reason = st.selectbox("Primary Visit Reason", options=sorted(df_reference['Visit_Reason'].unique()))
+
         with col3:
-            visit_reason = st.selectbox(
-                "Primary Visit Reason",
-                options=sorted(df_reference['Visit_Reason'].unique()),
-                help="Main reason for visiting cafes"
+            st.markdown("#### 💳 Spending Profile")
+            avg_spend = st.slider("Average Spend (AED)", 0, 150, 50)
+            total_spend = st.slider("Total Spend (AED)", 0, 300, 100)
+            pay_membership = st.slider("Willing to Pay Membership (AED)", 0, 500, 50)
+            
+            # Submit button
+            st.markdown("<br>", unsafe_allow_html=True)
+            submitted = st.form_submit_button(
+                "🔮 Predict Visit Likelihood",
+                type="primary",
+                use_container_width=True
             )
-        
-        # Spending Information
-        st.markdown("#### 💳 Expected Spending")
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            avg_spend = st.slider(
-                "Average Spend per Visit (AED)",
-                min_value=0,
-                max_value=150,
-                value=50,
-                step=5,
-                help="Expected average spend per visit"
-            )
-        
-        with col2:
-            total_spend = st.slider(
-                "Total Expected Spend (AED)",
-                min_value=0,
-                max_value=300,
-                value=100,
-                step=10,
-                help="Total spending in a typical visit"
-            )
-        
-        # Submit button
-        st.markdown("<br>", unsafe_allow_html=True)
-        submitted = st.form_submit_button(
-            "🔮 Predict Visit Likelihood",
-            type="primary",
-            use_container_width=True
-        )
     
     # Process prediction
     if submitted:
         with st.spinner('Analyzing prospect profile...'):
-            time.sleep(1)  # Simulate processing
+            time.sleep(1) # Simulate processing
             
             # Create input dataframe
             input_data = pd.DataFrame({
@@ -1607,7 +1141,6 @@ elif page == "🔮 Live Prospect Simulator":
             try:
                 # Get prediction probability
                 probability = pipeline.predict_proba(input_data)[0][1]
-                prediction = pipeline.predict(input_data)[0]
                 
                 st.markdown("---")
                 st.markdown("## 📊 Prediction Results")
@@ -1638,152 +1171,41 @@ elif page == "🔮 Live Prospect Simulator":
                     }
                 ))
                 
-                fig_gauge.update_layout(height=300, font={'size': 20})
+                fig_gauge.update_layout(height=300)
                 st.plotly_chart(fig_gauge, use_container_width=True)
-                
-                # Display result with interpretation
-                col1, col2, col3 = st.columns(3)
-                
-                with col1:
-                    if probability > 0.7:
-                        st.metric("Classification", "HIGH LIKELIHOOD ✅", delta="Will Visit")
-                    elif probability > 0.4:
-                        st.metric("Classification", "MEDIUM LIKELIHOOD ⚠️", delta="Might Visit")
-                    else:
-                        st.metric("Classification", "LOW LIKELIHOOD ❌", delta="Won't Visit")
-                
-                with col2:
-                    st.metric("Confidence Score", f"{probability*100:.1f}%")
-                
-                with col3:
-                    if probability > 0.7:
-                        persona_match = "Cluster 3 (Premium)"
-                    elif probability > 0.5:
-                        persona_match = "Cluster 2 (Affluent)"
-                    elif probability > 0.3:
-                        persona_match = "Cluster 1 (Bookworm)"
-                    else:
-                        persona_match = "Cluster 0 (Budget)"
-                    st.metric("Likely Persona", persona_match)
-                
-                st.markdown("---")
                 
                 # Detailed recommendation
                 if probability > 0.7:
                     st.success("""
                     ### ✅ HIGH-VALUE PROSPECT
-                    
-                    **Recommendation:** This is a high-priority prospect with strong visit likelihood.
-                    
+                    **Recommendation:** This is a high-priority prospect (likely Cluster 1 or 3).
                     **Suggested Actions:**
-                    - ✅ Immediate follow-up with personalized offer
-                    - ✅ Offer premium membership package
-                    - ✅ Invite to exclusive events or book launch
-                    - ✅ Allocate marketing budget for conversion
-                    - ✅ Expected Customer Lifetime Value: HIGH
-                    
-                    **Conversion Strategy:**
-                    Send a personalized email highlighting premium features, exclusive book selection, 
-                    and VIP perks. Consider offering a "first month free" membership trial.
+                    - ✅ Immediate follow-up with personalized offer.
+                    - ✅ Offer premium membership package.
+                    - ✅ Invite to exclusive events or book launch.
                     """)
                     st.balloons()
                 
                 elif probability > 0.4:
                     st.info("""
                     ### ⚠️ MEDIUM-POTENTIAL PROSPECT
-                    
-                    **Recommendation:** This prospect shows moderate interest but needs nurturing.
-                    
+                    **Recommendation:** This prospect needs nurturing (likely Cluster 0 or 2).
                     **Suggested Actions:**
-                    - 📧 Add to email nurture campaign
-                    - 🎁 Offer "first visit discount" (15-20% off)
-                    - 📚 Highlight specific features aligned with their interests
-                    - ⏰ Follow up after 7-14 days
-                    - 💡 Expected Customer Lifetime Value: MEDIUM
-                    
-                    **Conversion Strategy:**
-                    Focus on removing barriers to first visit. Offer a risk-free trial or money-back 
-                    guarantee. Share testimonials from similar customer profiles.
+                    - 📧 Add to email nurture campaign.
+                    - 🎁 Offer "first visit discount" (15-20% off).
+                    - 📚 Highlight specific features aligned with their interests.
                     """)
                 
                 else:
                     st.warning("""
                     ### ❌ LOW-PRIORITY PROSPECT
-                    
-                    **Recommendation:** This prospect is unlikely to convert. Minimal resource allocation advised.
-                    
+                    **Recommendation:** This prospect is unlikely to convert.
                     **Suggested Actions:**
-                    - 📮 Add to general newsletter (low priority)
-                    - ⏸️ Do not allocate marketing budget
-                    - 🔄 Re-evaluate if profile changes
-                    - 💰 Expected Customer Lifetime Value: LOW
-                    
-                    **Alternative Strategy:**
-                    Instead of active pursuit, add to a passive nurture sequence with quarterly check-ins. 
-                    Focus resources on higher-probability prospects.
+                    - 📮 Add to general newsletter (low priority).
+                    - ⏸️ Do not allocate marketing budget.
+                    - 🔄 Re-evaluate if profile changes.
                     """)
-                
-                # Profile Summary
-                st.markdown("---")
-                st.markdown("### 📋 Prospect Profile Summary")
-                
-                col1, col2 = st.columns(2)
-                
-                with col1:
-                    st.markdown("**Demographics:**")
-                    profile_demo = pd.DataFrame({
-                        'Attribute': ['Age Group', 'Gender', 'Employment', 'Education'],
-                        'Value': [age, gender, employment, education]
-                    })
-                    st.dataframe(profile_demo, hide_index=True, use_container_width=True)
-                
-                with col2:
-                    st.markdown("**Behavior & Spending:**")
-                    profile_behavior = pd.DataFrame({
-                        'Attribute': ['Income', 'Cafe Frequency', 'Reading Frequency', 'Avg Spend', 'Total Spend', 'Membership Willingness'],
-                        'Value': [income, cafe_freq, read_freq, f"{avg_spend} AED", f"{total_spend} AED", f"{pay_membership} AED"]
-                    })
-                    st.dataframe(profile_behavior, hide_index=True, use_container_width=True)
                 
             except Exception as e:
                 st.error(f"❌ Prediction Error: {e}")
                 st.info("Please check your inputs and try again.")
-    
-    # Tips Section
-    st.markdown("---")
-    st.markdown("### 💡 Simulator Tips")
-    
-    with st.expander("How to Use This Simulator Effectively"):
-        st.markdown("""
-        **Best Practices:**
-        1. **Accurate Inputs:** The model's predictions are only as good as the input data
-        2. **Multiple Scenarios:** Test different profile combinations to understand patterns
-        3. **Comparative Analysis:** Run similar profiles with one variable changed to see impact
-        4. **Regular Updates:** As you gather more data, retrain the model for better accuracy
-        
-        **Understanding the Results:**
-        - **70%+ = High Likelihood:** Aggressive marketing, premium offers
-        - **40-70% = Medium Likelihood:** Nurture campaigns, introductory offers
-        - **<40% = Low Likelihood:** Passive nurture, minimal resource allocation
-        
-        **Key Influencing Factors:**
-        Based on our regression analysis, the most influential factors are:
-        1. Income level (strongest predictor)
-        2. Expected spending amounts
-        3. Cafe visit frequency
-        4. Reading frequency
-        5. Visit reasons (work/study, food quality)
-        """)
-
-# ============================================================================
-# 9. FOOTER
-# ============================================================================
-
-st.markdown("---")
-st.markdown("""
-<div style='text-align: center; color: #8B6F47; padding: 20px;'>
-    <p><strong>Coffee & Books Cafe - Professional Analytics Dashboard</strong></p>
-    <p>Powered by Machine Learning | Built with Streamlit</p>
-    <p>© 2024 | All Rights Reserved</p>
-</div>
-""", unsafe_allow_html=True)
