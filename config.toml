@@ -1,0 +1,28 @@
+[theme]
+# Coffee & Books Cafe Theme
+# Base theme
+base = "light"
+
+# Primary color - Coffee Brown
+primaryColor = "#6F4E37"
+
+# Background color - Beige/Parchment
+backgroundColor = "#F5F5F0"
+
+# Secondary background - Pure White for cards
+secondaryBackgroundColor = "#FFFFFF"
+
+# Text color
+textColor = "#2C2C2C"
+
+# Font
+font = "sans serif"
+
+[server]
+# Set to false for production
+headless = true
+port = 8501
+
+[browser]
+# Automatically open browser
+gatherUsageStats = false
