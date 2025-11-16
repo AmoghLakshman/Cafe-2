@@ -1,32 +1,5 @@
-# ============================================================================
-# Coffee & Books Cafe - Dashboard Requirements
-# ============================================================================
-# Core Framework
-streamlit==1.31.0
-
-# Data Processing
-pandas==2.1.4
-numpy==1.26.3
-
-# Data Visualization
+streamlit==1.33.0
+pandas==2.0.3
+numpy==1.24.3
 plotly==5.18.0
-
-# Machine Learning
-scikit-learn==1.4.0
-
-# Additional Dependencies
-# (These are typically installed with the above packages, but listed for clarity)
-# scipy>=1.11.4
-# joblib>=1.3.2
-# threadpoolctl>=3.2.0
-# packaging>=23.2
-
-# Optional: For enhanced performance
-# pyarrow==14.0.2
-
-# ============================================================================
-# Installation Notes:
-# - Run: pip install -r requirements.txt
-# - For production, consider pinning ALL transitive dependencies
-# - Tested on Python 3.9, 3.10, and 3.11
-# ============================================================================
+scikit-learn==1.3.2
