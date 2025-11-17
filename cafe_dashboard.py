@@ -889,117 +889,582 @@ elif page == "🧪 The Simulation Lab (Advanced)":
     
     tab1, tab2, tab3 = st.tabs(["💰 Spending Predictor", "🧬 Persona Matcher", "🔗 Menu Recommender"])
     
-    # TAB 1: REGRESSION SIMULATOR
+    # ========================================================================
+    # TAB 1: REGRESSION SIMULATOR (WITH BUTTON!)
+    # ========================================================================
     with tab1:
         st.header("💰 The Spending Predictor")
         st.markdown("Predicts customer spending based on profile (Powered by Lasso Model).")
-        
-        col1, col2 = st.columns(2)
-        with col1:
-            reg_income = st.selectbox("Income Bracket", 
-                ["Less than 5,000", "5,000 - 10,000", "10,001 - 20,000", 
-                 "20,001 - 35,000", "35,001 - 50,000", "50,001 - 75,000", "Above 75,000"],
-                index=3)
-            
-            reg_reason = st.multiselect("Visit Reasons (Select all that apply)", 
-                ["Food quality", "Work/study", "Coffee quality", "Ambiance", "Social meetings"])
-        
-        base_spend = 35.0
-        
-        if reg_income == "Above 75,000": 
-            base_spend += 117.24
-        elif reg_income == "50,001 - 75,000": 
-            base_spend += 89.74
-        elif reg_income == "35,001 - 50,000": 
-            base_spend += 14.16
-        elif reg_income == "Less than 5,000": 
-            base_spend -= 46.20
-        elif reg_income == "5,000 - 10,000": 
-            base_spend -= 39.10
-        
-        if "Food quality" in reg_reason and "Work/study" in reg_reason: 
-            base_spend += 26.42
-        if "Coffee quality" in reg_reason and "Food quality" in reg_reason: 
-            base_spend -= 11.61
-        
-        final_spend = max(15, min(300, base_spend))
-        
-        with col2:
-            st.metric(label="Predicted Spend per Visit", value=f"{final_spend:.2f} AED")
-            
-            if final_spend > 100:
-                st.success("🚀 **High Value!** Target with premium membership.")
-            elif final_spend > 50:
-                st.info("⚖️ **Mid Value.** Target with loyalty cards.")
-            else:
-                st.warning("⚠️ **Budget Customer.** Target with daily combos.")
-    
-    # TAB 2: CLUSTERING SIMULATOR
-    with tab2:
-        st.header("🧬 The Persona Matcher")
-        st.markdown("Classify customers into segments (Powered by K-Means).")
-        
-        col1, col2 = st.columns(2)
-        with col1:
-            c_spend = st.slider("Average Spend (AED)", 10, 200, 50)
-            c_total = st.slider("Total Lifetime Spend (AED)", 10, 500, 100)
-            c_membership = st.slider("Willingness to Pay for Membership", 0, 500, 50)
-        
-        centroids = {
-            "Cluster 0 (Budget Casual)": np.array([26.92, 46.91, 67.36]),
-            "Cluster 1 (Bookworm)": np.array([39.78, 73.88, 247.29]),
-            "Cluster 2 (Social Visitor)": np.array([58.78, 142.43, 8.06]),
-            "Cluster 3 (Premium Enthusiast)": np.array([69.30, 168.79, 367.73])
-        }
-        
-        user_point = np.array([c_spend, c_total, c_membership])
-        best_cluster = min(centroids.keys(), key=lambda k: np.linalg.norm(user_point - centroids[k]))
-        
-        with col2:
-            st.info(f"🧬 **DNA Match:** {best_cluster}")
-            
-            if "Premium" in best_cluster:
-                st.success("⭐ **VIP Target!** Sell Elite Membership immediately.")
-                st.balloons()
-            elif "Bookworm" in best_cluster:
-                st.success("📚 **Loyal Reader.** Sell Book Club Membership.")
-            elif "Social" in best_cluster:
-                st.warning("💰 **High Spender, No Membership.** Upsell food & events.")
-            else:
-                st.error("💸 **Low Value.** Basic offers only.")
-    
-    # TAB 3: ASSOCIATION RULES SIMULATOR
-    with tab3:
-        st.header("🔗 The Smart Menu Recommender")
-        st.markdown("Recommend perfect bundles based on customer interest (Powered by Apriori Rules).")
-        
-        interest = st.selectbox("What is the customer interested in?", 
-            ["Business Books", "Fiction Novels", "Morning Coffee", "Studying/Working", "Family Time"])
-        
         st.markdown("---")
         
-        if interest == "Business Books":
-            st.success("✅ **Recommendation:** 'The Business Professional' Bundle")
-            st.markdown("**Contains:** Business Book + Flavored Coffee + International Meal")
-            st.markdown("**Why?** Data shows **2.89x Lift** for this combination.")
-            st.metric("Bundle Price", "95 AED")
+        with st.form("spending_form"):
+            col1, col2 = st.columns(2)
             
-        elif interest == "Fiction Novels":
-            st.info("✅ **Recommendation:** 'The Literary Escape' Bundle")
-            st.markdown("**Contains:** Fiction Book + Herbal Tea + Cookies")
-            st.markdown("**Why?** Strong association (**2.03x Lift**) between fiction and light snacks.")
-            st.metric("Bundle Price", "65 AED")
+            with col1:
+                st.markdown("#### 📝 Customer Profile")
+                reg_income = st.selectbox("Income Bracket", 
+                    ["Less than 5,000", "5,000 - 10,000", "10,001 - 20,000", 
+                     "20,001 - 35,000", "35,001 - 50,000", "50,001 - 75,000", "Above 75,000"],
+                    index=3,
+                    key="reg_income")
+                
+                reg_reason = st.multiselect("Visit Reasons (Select all that apply)", 
+                    ["Food quality", "Work/study", "Coffee quality", "Ambiance", "Social meetings"],
+                    default=["Coffee quality"],
+                    key="reg_reason")
+                
+                st.markdown("<br>", unsafe_allow_html=True)
             
-        elif interest == "Morning Coffee":
-            st.warning("✅ **Recommendation:** 'The Morning Ritual'")
-            st.markdown("**Contains:** Specialty Coffee + Croissant/Muffin")
-            st.markdown("**Why?** Classic high-frequency pair (**1.96x Lift**).")
-            st.metric("Bundle Price", "45 AED")
+            with col2:
+                st.markdown("#### 📊 Prediction Result")
+                st.info("👈 Select income and visit reasons, then click **Predict Spending** below")
             
-        else:
-            st.info("✅ **Recommendation:** 'The Study Pass'")
-            st.markdown("**Contains:** Unlimited Drip Coffee + Quiet Zone Access")
-            st.metric("Daily Pass", "50 AED")
+            # Submit button
+            predict_spending = st.form_submit_button(
+                "💰 Predict Spending",
+                type="primary",
+                use_container_width=True
+            )
+        
+        # Show results ONLY after button click
+        if predict_spending:
+            with st.spinner("Calculating spending prediction..."):
+                time.sleep(0.5)  # Simulate processing
+                
+                # Calculate predicted spend
+                base_spend = 35.0
+                
+                # Income impact
+                if reg_income == "Above 75,000": 
+                    base_spend += 117.24
+                elif reg_income == "50,001 - 75,000": 
+                    base_spend += 89.74
+                elif reg_income == "35,001 - 50,000": 
+                    base_spend += 14.16
+                elif reg_income == "Less than 5,000": 
+                    base_spend -= 46.20
+                elif reg_income == "5,000 - 10,000": 
+                    base_spend -= 39.10
+                
+                # Reason impact
+                if "Food quality" in reg_reason and "Work/study" in reg_reason: 
+                    base_spend += 26.42
+                if "Coffee quality" in reg_reason and "Food quality" in reg_reason: 
+                    base_spend -= 11.61
+                
+                final_spend = max(15, min(300, base_spend))
+                
+                st.markdown("---")
+                st.markdown("### 💵 Prediction Results")
+                
+                # Display predicted spend
+                st.markdown(f"""
+                <div style='background: linear-gradient(135deg, #6F4E37 0%, #8B4513 100%); 
+                     padding: 30px; border-radius: 15px; color: white; text-align: center; margin: 20px 0;'>
+                    <h1 style='font-size: 3.5em; margin: 0; color: white;'>{final_spend:.2f} AED</h1>
+                    <p style='font-size: 1.2em; margin: 10px 0; color: white;'>Predicted Spend per Visit</p>
+                </div>
+                """, unsafe_allow_html=True)
+                
+                # Recommendation based on spend
+                col1, col2, col3 = st.columns(3)
+                
+                with col1:
+                    st.metric("Base Spend", "35.00 AED")
+                with col2:
+                    income_impact = final_spend - 35.0
+                    st.metric("Income Impact", f"{income_impact:+.2f} AED")
+                with col3:
+                    st.metric("Final Prediction", f"{final_spend:.2f} AED")
+                
+                st.markdown("---")
+                
+                # Strategic recommendation
+                if final_spend > 100:
+                    st.success("""
+                    ### 🚀 HIGH VALUE CUSTOMER!
+                    
+                    **Strategy:**
+                    - ✅ Target with **Premium Membership** (350+ AED/month)
+                    - ✅ Offer **VIP perks** and exclusive events
+                    - ✅ Priority seating and personalized service
+                    - ✅ Expected monthly value: ~{:.0f} AED
+                    """.format(final_spend * 8))
+                    st.balloons()
+                    
+                elif final_spend > 50:
+                    st.info("""
+                    ### ⚖️ MID-VALUE CUSTOMER
+                    
+                    **Strategy:**
+                    - 📧 Target with **Standard Membership** (150-250 AED/month)
+                    - 🎁 Offer **loyalty card** (10% discount after 5 visits)
+                    - 📚 Book club invitations
+                    - 💰 Expected monthly value: ~{:.0f} AED
+                    """.format(final_spend * 4))
+                    
+                else:
+                    st.warning("""
+                    ### ⚠️ BUDGET CUSTOMER
+                    
+                    **Strategy:**
+                    - ☕ Target with **daily combos** (coffee + pastry deals)
+                    - 🎯 "Happy Hour" promotions (20% off off-peak)
+                    - 📅 Weekly specials to increase frequency
+                    - 💵 Focus on volume over margin
+                    """)
+    
+    # ========================================================================
+    # TAB 2: CLUSTERING SIMULATOR (WITH BUTTON!)
+    # ========================================================================
+    with tab2:
+        st.header("🧬 The Persona Matcher")
+        st.markdown("Classify customers into segments (Powered by K-Means Clustering).")
+        st.markdown("---")
+        
+        with st.form("persona_form"):
+            col1, col2 = st.columns(2)
+            
+            with col1:
+                st.markdown("#### 📝 Customer Spending Behavior")
+                c_spend = st.slider("Average Spend per Visit (AED)", 10, 200, 50, key="c_spend")
+                c_total = st.slider("Total Lifetime Spend (AED)", 10, 500, 100, key="c_total")
+                c_membership = st.slider("Willingness to Pay for Membership (AED)", 0, 500, 50, key="c_membership")
+                
+                st.markdown("<br>", unsafe_allow_html=True)
+            
+            with col2:
+                st.markdown("#### 🎭 Persona Result")
+                st.info("👈 Adjust spending attributes, then click **Match Persona** below")
+            
+            # Submit button
+            match_persona = st.form_submit_button(
+                "🧬 Match Persona",
+                type="primary",
+                use_container_width=True
+            )
+        
+        # Show results ONLY after button click
+        if match_persona:
+            with st.spinner("Analyzing customer DNA..."):
+                time.sleep(0.5)
+                
+                # Define cluster centroids
+                centroids = {
+                    "Cluster 0 (Budget Casual)": {
+                        'center': np.array([26.92, 46.91, 67.36]),
+                        'emoji': '💼',
+                        'name': 'Budget-Conscious Casual',
+                        'color': '#FFA726'
+                    },
+                    "Cluster 1 (Bookworm)": {
+                        'center': np.array([39.78, 73.88, 247.29]),
+                        'emoji': '📚',
+                        'name': 'Middle-Income Bookworm',
+                        'color': '#66BB6A'
+                    },
+                    "Cluster 2 (Social Visitor)": {
+                        'center': np.array([58.78, 142.43, 8.06]),
+                        'emoji': '💰',
+                        'name': 'Affluent Social Visitor',
+                        'color': '#42A5F5'
+                    },
+                    "Cluster 3 (Premium Enthusiast)": {
+                        'center': np.array([69.30, 168.79, 367.73]),
+                        'emoji': '⭐',
+                        'name': 'Premium Reading Enthusiast',
+                        'color': '#AB47BC'
+                    }
+                }
+                
+                # Find closest cluster
+                user_point = np.array([c_spend, c_total, c_membership])
+                best_cluster = min(centroids.keys(), 
+                                 key=lambda k: np.linalg.norm(user_point - centroids[k]['center']))
+                
+                cluster_info = centroids[best_cluster]
+                
+                st.markdown("---")
+                st.markdown("### 🎭 Persona Assignment Result")
+                
+                # Display matched persona
+                st.markdown(f"""
+                <div style='background: linear-gradient(135deg, {cluster_info['color']} 0%, {cluster_info['color']}DD 100%); 
+                     padding: 40px; border-radius: 15px; color: white; text-align: center; margin: 20px 0;'>
+                    <h1 style='font-size: 4em; margin: 0; color: white;'>{cluster_info['emoji']}</h1>
+                    <h2 style='margin: 15px 0; color: white;'>{cluster_info['name']}</h2>
+                    <p style='font-size: 1.1em; color: white;'>{best_cluster}</p>
+                </div>
+                """, unsafe_allow_html=True)
+                
+                # Comparison table
+                st.markdown("#### 📊 Your Profile vs. Cluster Average")
+                
+                comparison_data = pd.DataFrame({
+                    'Metric': ['Avg Spend', 'Total Spend', 'Membership WTP'],
+                    'Your Input': [
+                        f'{c_spend:.2f} AED',
+                        f'{c_total:.2f} AED',
+                        f'{c_membership:.2f} AED'
+                    ],
+                    'Cluster Average': [
+                        f"{cluster_info['center'][0]:.2f} AED",
+                        f"{cluster_info['center'][1]:.2f} AED",
+                        f"{cluster_info['center'][2]:.2f} AED"
+                    ],
+                    'Difference': [
+                        f"{(c_spend - cluster_info['center'][0]):+.2f} AED",
+                        f"{(c_total - cluster_info['center'][1]):+.2f} AED",
+                        f"{(c_membership - cluster_info['center'][2]):+.2f} AED"
+                    ]
+                })
+                
+                st.dataframe(comparison_data, use_container_width=True, hide_index=True)
+                
+                st.markdown("---")
+                
+                # Strategic recommendation
+                if "Premium" in best_cluster:
+                    st.success("""
+                    ### ⭐ VIP TARGET - HIGHEST VALUE SEGMENT!
+                    
+                    **Strategic Action Plan:**
+                    - ✅ **Immediate Priority:** Schedule personal consultation
+                    - ✅ **Offer:** Elite Membership at 350+ AED/month
+                    - ✅ **Perks:** Private reading room, author events, concierge service
+                    - ✅ **Expected Lifetime Value:** 15,000+ AED/year
+                    - ✅ **Communication:** Personal email from cafe owner
+                    """)
+                    st.balloons()
+                    
+                elif "Bookworm" in best_cluster:
+                    st.success("""
+                    ### 📚 LOYAL READER - CORE MEMBERSHIP BASE
+                    
+                    **Strategic Action Plan:**
+                    - ✅ **Target:** Standard Book Club Membership (200-250 AED/month)
+                    - ✅ **Offer:** Exclusive book selections + member events
+                    - ✅ **Perks:** 15% discount on books, priority event registration
+                    - ✅ **Expected Lifetime Value:** 6,000-8,000 AED/year
+                    - ✅ **Communication:** Weekly book recommendations newsletter
+                    """)
+                    
+                elif "Social" in best_cluster:
+                    st.warning("""
+                    ### 💰 HIGH SPENDER, NO MEMBERSHIP INTEREST
+                    
+                    **Strategic Action Plan:**
+                    - ⚠️ **DO NOT** pitch membership (WTP is only 8 AED!)
+                    - ✅ **Focus:** Premium per-visit upsells (food, special coffee)
+                    - ✅ **Target:** Social event tickets, private table bookings
+                    - ✅ **Perks:** VIP seating without membership commitment
+                    - ✅ **Expected Value:** 4,000-5,000 AED/year (per-visit basis)
+                    """)
+                    
+                else:
+                    st.info("""
+                    ### 💼 BUDGET CUSTOMER - VOLUME STRATEGY
+                    
+                    **Strategic Action Plan:**
+                    - ✅ **Avoid:** Expensive membership pitches
+                    - ✅ **Target:** Daily combo deals (coffee + pastry 25 AED)
+                    - ✅ **Offer:** Punch card (buy 5, get 1 free)
+                    - ✅ **Goal:** Increase visit frequency (2-3x/month → weekly)
+                    - ✅ **Expected Value:** 1,500-2,000 AED/year
+                    """)
+    
+    # ========================================================================
+    # TAB 3: ASSOCIATION RULES SIMULATOR (WITH BUTTON!)
+    # ========================================================================
+    with tab3:
+        st.header("🔗 The Smart Menu Recommender")
+        st.markdown("Recommend perfect bundles based on customer interest (Powered by Association Rules).")
+        st.markdown("---")
+        
+        with st.form("bundle_form"):
+            col1, col2 = st.columns(2)
+            
+            with col1:
+                st.markdown("#### 📝 Customer Preferences")
+                interest = st.selectbox("What is the customer interested in?", 
+                    ["Business Books", "Fiction Novels", "Morning Coffee", 
+                     "Studying/Working", "Family Time", "Social Meetings"],
+                    key="interest")
+                
+                budget = st.slider("Customer Budget (AED)", 30, 150, 75, step=5, key="budget")
+                
+                visit_time = st.selectbox("Expected Visit Time",
+                    ["Morning (7-11 AM)", "Lunch (11 AM-2 PM)", 
+                     "Afternoon (2-6 PM)", "Evening (6-10 PM)"],
+                    key="visit_time")
+                
+                st.markdown("<br>", unsafe_allow_html=True)
+            
+            with col2:
+                st.markdown("#### 🎁 Bundle Recommendation")
+                st.info("👈 Select customer preferences, then click **Recommend Bundle** below")
+            
+            # Submit button
+            recommend_bundle = st.form_submit_button(
+                "🔗 Recommend Bundle",
+                type="primary",
+                use_container_width=True
+            )
+        
+        # Show results ONLY after button click
+        if recommend_bundle:
+            with st.spinner("Analyzing bundle recommendations..."):
+                time.sleep(0.5)
+                
+                st.markdown("---")
+                st.markdown("### 🎁 Recommended Bundle")
+                
+                # Bundle recommendations based on interest
+                if interest == "Business Books":
+                    st.markdown("""
+                    <div style='background: linear-gradient(135deg, #1E88E5 0%, #1976D2 100%); 
+                         padding: 30px; border-radius: 15px; color: white; margin: 20px 0;'>
+                        <h2 style='color: white; margin: 0;'>📊 'The Business Professional' Bundle</h2>
+                        <p style='font-size: 1.1em; margin: 15px 0;'>Perfect for ambitious professionals</p>
+                    </div>
+                    """, unsafe_allow_html=True)
+                    
+                    col1, col2, col3 = st.columns(3)
+                    col1.metric("Bundle Price", "95 AED")
+                    col2.metric("Association Lift", "2.89x")
+                    col3.metric("Confidence", "63.2%")
+                    
+                    st.success("""
+                    ### 📦 Bundle Contains:
+                    
+                    1. **📚 Business/Self-Help Book Selection**
+                       - Latest bestsellers from our curated collection
+                       - Access to business book club discussions
+                    
+                    2. **☕ Premium Flavored Coffee**
+                       - Vanilla, Caramel, or Hazelnut Latte
+                       - Unlimited refills during visit
+                    
+                    3. **🍽️ International Cuisine Meal**
+                       - Choose from: Mediterranean Bowl, Asian Fusion, or Gourmet Sandwich
+                       - Includes side salad and dessert
+                    
+                    ### 💡 Why This Bundle?
+                    Our data shows customers buying these together have **2.89x higher satisfaction** 
+                    and spend **40% more time** in the cafe. Perfect for:
+                    - 💼 Working professionals during lunch meetings
+                    - 📊 Entrepreneurs planning strategy sessions
+                    - 🎯 Business students studying for exams
+                    """)
+                    
+                    if budget >= 95:
+                        st.balloons()
+                        st.success("✅ **Within Budget!** Customer can afford this bundle.")
+                    else:
+                        st.warning(f"⚠️ Bundle is {95 - budget:.0f} AED over budget. Suggest alternatives.")
+                
+                elif interest == "Fiction Novels":
+                    st.markdown("""
+                    <div style='background: linear-gradient(135deg, #9C27B0 0%, #8E24AA 100%); 
+                         padding: 30px; border-radius: 15px; color: white; margin: 20px 0;'>
+                        <h2 style='color: white; margin: 0;'>📖 'The Literary Escape' Bundle</h2>
+                        <p style='font-size: 1.1em; margin: 15px 0;'>For passionate fiction readers</p>
+                    </div>
+                    """, unsafe_allow_html=True)
+                    
+                    col1, col2, col3 = st.columns(3)
+                    col1.metric("Bundle Price", "65 AED")
+                    col2.metric("Association Lift", "2.03x")
+                    col3.metric("Confidence", "53.6%")
+                    
+                    st.info("""
+                    ### 📦 Bundle Contains:
+                    
+                    1. **📚 Fiction Book Access**
+                       - Browse our literary fiction collection
+                       - Join monthly book club discussions
+                    
+                    2. **🫖 Herbal Tea Selection**
+                       - Chamomile, Green Tea, or Earl Grey
+                       - Served with honey and lemon
+                    
+                    3. **🍪 Light Snacks**
+                       - Assorted cookies and biscuits
+                       - Fresh fruit platter
+                    
+                    ### 💡 Perfect For:
+                    - 📖 Weekend readers seeking relaxation
+                    - 🧘 Stress relief through literature
+                    - 👥 Book club members
+                    """)
+                    
+                    if budget >= 65:
+                        st.success("✅ **Great Fit!** Well within customer budget.")
+                
+                elif interest == "Morning Coffee":
+                    st.markdown("""
+                    <div style='background: linear-gradient(135deg, #F57C00 0%, #EF6C00 100%); 
+                         padding: 30px; border-radius: 15px; color: white; margin: 20px 0;'>
+                        <h2 style='color: white; margin: 0;'>☀️ 'The Morning Ritual' Bundle</h2>
+                        <p style='font-size: 1.1em; margin: 15px 0;'>Start your day right</p>
+                    </div>
+                    """, unsafe_allow_html=True)
+                    
+                    col1, col2, col3 = st.columns(3)
+                    col1.metric("Bundle Price", "45 AED")
+                    col2.metric("Association Lift", "1.96x")
+                    col3.metric("Confidence", "54.3%")
+                    
+                    st.warning("""
+                    ### 📦 Bundle Contains:
+                    
+                    1. **☕ Specialty Coffee**
+                       - Cappuccino, Americano, or Latte
+                       - Double shot option available
+                    
+                    2. **🥐 Fresh Pastry**
+                       - Croissant, Muffin, or Danish
+                       - Baked fresh daily
+                    
+                    3. **🍊 Fresh Juice**
+                       - Orange, Apple, or Mixed Berry
+                    
+                    ### 💡 Best For:
+                    - ⏰ Morning commuters (7-9 AM)
+                    - 💼 Before-work quick stops
+                    - 📰 Newspaper + coffee routine
+                    """)
+                    
+                    st.success("✅ **Excellent Value!** Most affordable option.")
+                
+                elif interest == "Studying/Working":
+                    st.markdown("""
+                    <div style='background: linear-gradient(135deg, #00897B 0%, #00796B 100%); 
+                         padding: 30px; border-radius: 15px; color: white; margin: 20px 0;'>
+                        <h2 style='color: white; margin: 0;'>📚 'The Study Pass' Bundle</h2>
+                        <p style='font-size: 1.1em; margin: 15px 0;'>Productivity maximizer</p>
+                    </div>
+                    """, unsafe_allow_html=True)
+                    
+                    col1, col2, col3 = st.columns(3)
+                    col1.metric("Daily Pass", "50 AED")
+                    col2.metric("Weekly Pass", "300 AED", delta="-50 AED savings")
+                    col3.metric("Monthly Pass", "1000 AED", delta="-500 AED savings")
+                    
+                    st.info("""
+                    ### 📦 Pass Includes:
+                    
+                    1. **☕ Unlimited Drip Coffee**
+                       - All-day unlimited refills
+                       - Espresso shots for 5 AED extra
+                    
+                    2. **💺 Quiet Zone Access**
+                       - Reserved study area
+                       - Power outlets at every seat
+                       - Fast WiFi (100 Mbps)
+                    
+                    3. **📚 Book Lending**
+                       - Borrow up to 2 books during visit
+                       - Reference materials available
+                    
+                    ### 💡 Perfect For:
+                    - 🎓 Students during exam season
+                    - 💻 Freelancers needing workspace
+                    - 📝 Writers seeking inspiration
+                    """)
+                
+                elif interest == "Family Time":
+                    st.markdown("""
+                    <div style='background: linear-gradient(135deg, #E91E63 0%, #D81B60 100%); 
+                         padding: 30px; border-radius: 15px; color: white; margin: 20px 0;'>
+                        <h2 style='color: white; margin: 0;'>👨‍👩‍👧‍👦 'The Family Package' Bundle</h2>
+                        <p style='font-size: 1.1em; margin: 15px 0;'>Quality time together</p>
+                    </div>
+                    """, unsafe_allow_html=True)
+                    
+                    col1, col2 = st.columns(2)
+                    col1.metric("Family Bundle", "120 AED", delta="For 4 people")
+                    col2.metric("Kids Menu", "+15 AED", delta="Per child")
+                    
+                    st.success("""
+                    ### 📦 Bundle Contains:
+                    
+                    1. **☕ Beverages for All**
+                       - 2 Adult coffees/teas
+                       - 2 Kids hot chocolates or juice
+                    
+                    2. **🍰 Dessert Platter**
+                       - Assorted cakes and pastries
+                       - Kid-friendly options included
+                    
+                    3. **📚 Children's Book Corner Access**
+                       - Interactive reading area
+                       - Coloring books and crayons
+                    
+                    4. **🎮 Board Game Rental**
+                       - Choose from 20+ games
+                       - Family-friendly options
+                    """)
+                
+                else:  # Social Meetings
+                    st.markdown("""
+                    <div style='background: linear-gradient(135deg, #5E35B1 0%, #512DA8 100%); 
+                         padding: 30px; border-radius: 15px; color: white; margin: 20px 0;'>
+                        <h2 style='color: white; margin: 0;'>🎉 'The Social Hub' Bundle</h2>
+                        <p style='font-size: 1.1em; margin: 15px 0;'>Perfect for meetups</p>
+                    </div>
+                    """, unsafe_allow_html=True)
+                    
+                    col1, col2 = st.columns(2)
+                    col1.metric("Small Group (2-4)", "80 AED/person")
+                    col2.metric("Large Group (5+)", "70 AED/person", delta="-10 AED discount")
+                    
+                    st.info("""
+                    ### 📦 Bundle Contains:
+                    
+                    1. **☕ Beverage Selection**
+                       - Premium coffee, tea, or specialty drinks
+                       - Unlimited refills
+                    
+                    2. **🍽️ Sharing Platters**
+                       - Appetizer board (cheese, crackers, fruits)
+                       - Finger sandwiches
+                    
+                    3. **📍 Reserved Seating**
+                       - Private corner or window table
+                       - 3-hour guaranteed seating
+                    
+                    4. **📚 Discussion Materials**
+                       - Access to magazine collection
+                       - Book club discussion guides
+                    """)
+                
+                st.markdown("---")
+                
+                # Upsell opportunities
+                st.markdown("### 💡 Recommended Add-Ons")
+                col1, col2, col3 = st.columns(3)
+                
+                with col1:
+                    st.markdown("""
+                    **📚 Book Purchase**
+                    - 10% member discount
+                    - Take home your favorite
+                    """)
+                
+                with col2:
+                    st.markdown("""
+                    **🎁 Gift Card**
+                    - Perfect for friends
+                    - No expiration date
+                    """)
+                
+                with col3:
+                    st.markdown("""
+                    **📅 Event Tickets**
+                    - Author meet & greets
+                    - Book club sessions
+                    """)
 
 # ============================================================================
 # FOOTER
@@ -1013,3 +1478,4 @@ st.markdown("""
     <p>© 2024 | All Rights Reserved</p>
 </div>
 """, unsafe_allow_html=True)
+
