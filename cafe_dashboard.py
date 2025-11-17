@@ -281,6 +281,7 @@ page = st.sidebar.radio(
         "👥 Customer Personas",
         "📈 ML Model Results",
         "🔮 Live Prospect Simulator"
+        🧪 The Simulation Lab (Advanced)"
     ]
 )
 
@@ -1339,3 +1340,4 @@ elif page == "🧪 The Simulation Lab (Advanced)":
             st.markdown("**Contains:** Unlimited Drip Coffee + Quiet Zone Access")
             st.metric("Daily Pass", "50 AED")
             
+
