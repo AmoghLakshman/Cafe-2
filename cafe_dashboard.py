@@ -24,6 +24,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.neighbors import KNeighborsClassifier
 import warnings
 import time
+from datetime import datetime
 
 # ============================================================================
 # 0. PAGE CONFIGURATION & SETUP
@@ -1209,3 +1210,4 @@ elif page == "🔮 Live Prospect Simulator":
             except Exception as e:
                 st.error(f"❌ Prediction Error: {e}")
                 st.info("Please check your inputs and try again.")
+
